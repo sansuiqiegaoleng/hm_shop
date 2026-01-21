@@ -5,6 +5,7 @@ import 'package:hm_shop/components/Home/HmSlider.dart';
 import 'package:hm_shop/components/Home/HmSuggestion.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/viewmodels/home.dart';
+import 'package:hm_shop/api/home.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
@@ -14,25 +15,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final List<BannerItem> _bannerList = [
-    BannerItem(
-      id: "1",
-      imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg",
-    ),
-    BannerItem(
-      id: "2",
-      imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png",
-    ),
-    BannerItem(
-      id: "3",
-      imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg",
-    ),
-  ];
+  List<BannerItem> _bannerList = [];
 
   List<Widget> _getScollerChildreb() {
     return [
       // 轮播图
-      SliverToBoxAdapter(child: HmSlider(bannerList: _bannerList )),
+      SliverToBoxAdapter(child: HmSlider(bannerList: _bannerList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 分类
       SliverToBoxAdapter(child: HmCategory()),
@@ -58,6 +46,17 @@ class _HomeViewState extends State<HomeView> {
       // 更多列表
       HmMoreList(),
     ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getBannerList();
+  }
+
+  void _getBannerList() async {
+    _bannerList = await getBannerListAPI();
+    setState(() {});
   }
 
   @override
