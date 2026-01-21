@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: HmCategory(categoryList: _categoryList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 热门
-      SliverToBoxAdapter(child: HmHot()),
+      SliverToBoxAdapter(child: HmSuggestion(recommendationResult: _recommendationResult)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 更多列表
       SliverToBoxAdapter(
@@ -51,11 +51,19 @@ class _HomeViewState extends State<HomeView> {
     ];
   }
 
+  // 特惠推荐
+  RecommendationResult _recommendationResult = RecommendationResult(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+
   @override
   void initState() {
     super.initState();
     _getBannerList();
     _getCategoryList();
+    _getRecommendationList();
   }
 
   // 获取分类列表
@@ -67,6 +75,12 @@ class _HomeViewState extends State<HomeView> {
   // 获取轮播图表
   void _getBannerList() async {
     _bannerList = await getBannerListAPI();
+    setState(() {});
+  }
+
+  // 获取特惠推荐列表
+  void _getRecommendationList() async {
+    _recommendationResult = await getRecommendationListAPI();
     setState(() {});
   }
 

@@ -60,6 +60,7 @@ class _HmSliderState extends State<HmSlider> {
           decoration: BoxDecoration(
             color: const Color.fromRGBO(0, 0, 0, 0.5),
             borderRadius: BorderRadius.circular(20),
+            
           ),
           child: Text("搜索...", style: TextStyle(color: Colors.white)),
         ),
