@@ -4,6 +4,6 @@ import 'package:hm_shop/viewmodels/home.dart';
 
 Future<GoodsDetailsItems> getGuessLikeListAPI(Map<String, dynamic> params) async {
   return GoodsDetailsItems.fromJson(
-    await dioRequest.get(HttpConstants.GUESS_LIST, pramas: params),
+    await dioRequest.get(HttpConstants.GUESS_LIST, params: params),
   );
 } 
