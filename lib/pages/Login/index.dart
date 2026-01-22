@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hm_shop/api/user.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
 import 'package:hm_shop/stores/UserController.dart';
 import 'package:hm_shop/utils/ToastUtils.dart';
 import 'package:get/get.dart';
@@ -76,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
         "password": _codeController.text,
       });
       _userController.updateUserInfo(res);
+      tokenManager.setToken(res.token);//写入持久化
       ToastUtils.show(context, "登录成功");
       Navigator.pop(context);
     } catch (e) {

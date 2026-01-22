@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hm_shop/constants/index.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
 
 // 基于dio二次封装
 
@@ -17,6 +18,10 @@ class DioRequest {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (request, handler) {
+          if (tokenManager.getToken().isNotEmpty) {
+            request.headers['Authorization'] =
+                'Bearer ${tokenManager.getToken()}';
+          }
           // 在发送请求之前做些什么
           handler.next(request); // 继续发送请求
         },

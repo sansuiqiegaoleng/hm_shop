@@ -3,6 +3,10 @@ import 'package:hm_shop/pages/Cart/index.dart';
 import 'package:hm_shop/pages/Category/index.dart';
 import 'package:hm_shop/pages/Home/index.dart';
 import 'package:hm_shop/pages/Mine/index.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
+import 'package:hm_shop/stores/UserController.dart';
+import 'package:get/get.dart';
+import 'package:hm_shop/api/user.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -13,6 +17,23 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
+
+  final UserController _userController = Get.put(UserController());
+
+  _initUser() async {
+    await tokenManager.init();
+    if (tokenManager.getToken().isNotEmpty) {
+      _userController.updateUserInfo(await getUserInfoAPI());
+      // 有token，初始化用户信息
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // 初始化用户信息
+    _initUser();
+  }
 
   @override
   Widget build(BuildContext context) {
