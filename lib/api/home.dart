@@ -3,7 +3,6 @@ import 'package:hm_shop/constants/index.dart';
 import 'package:hm_shop/utils/DioRequest.dart';
 import 'package:hm_shop/viewmodels/home.dart';
 
-
 Future<List<BannerItem>> getBannerListAPI() async {
   return ((await dioRequest.get(HttpConstants.BANNER_LIST)) as List).map((
     item,
@@ -36,12 +35,10 @@ Future<RecommendationResult> getInVogueListAPI() async {
   );
 }
 
-
-
 // 一站式推荐
 Future<RecommendationResult> getOneStopListAPI() async {
   // 返回请求
-  return RecommendationResult.fromJson(   
+  return RecommendationResult.fromJson(
     await dioRequest.get(HttpConstants.ONE_STOP_LIST),
   );
 }

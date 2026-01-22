@@ -40,22 +40,20 @@ class _HomeViewState extends State<HomeView> {
           child: Flex(
             direction: Axis.horizontal,
             children: [
-                Expanded(
+              Expanded(
                 child: HmHot(result: _inVogueResult, type: "hot"),
               ),
               SizedBox(width: 10),
               Expanded(
                 child: HmHot(result: _oneStopResult, type: "step"),
               ),
-
-
             ],
           ),
         ),
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 更多列表
-       HmMoreList(recommendList: _recommendList), // 无限滚动列表
+      HmMoreList(recommendList: _recommendList), // 无限滚动列表
     ];
   }
 
@@ -78,6 +76,18 @@ class _HomeViewState extends State<HomeView> {
     subTypes: [],
   );
 
+  @override
+  void initState() {
+    super.initState();
+    _getBannerList();
+    _getCategoryList();
+    _getRecommendationList();
+    _getInVogueList();
+    _getOneStopList();
+    _getRecommendList();
+    _registerEvent();
+  }
+
   // 获取热榜推荐列表
   void _getInVogueList() async {
     _inVogueResult = await getInVogueListAPI();
@@ -89,25 +99,42 @@ class _HomeViewState extends State<HomeView> {
     _oneStopResult = await getOneStopListAPI();
     setState(() {});
   }
+
   // 推荐列表
-  List<GoodDetailItem> _recommendList = []; 
+  List<GoodDetailItem> _recommendList = [];
+
+  int _page = 1;
+  bool _isloading = false;
+  bool _hasMore = true;
 
   // 获取推荐列表
   void _getRecommendList() async {
-    _recommendList = await getRecommendListAPI({"limit": 10});
+    if (_isloading || !_hasMore) {
+      return;
+    }
+    ;
+    _isloading = true;
+    int requestLimit = _page * 8;
+    _recommendList = await getRecommendListAPI({"limit": requestLimit});
     setState(() {});
+    _isloading = false;
+
+    if (_recommendList.length < 8) {
+      _hasMore = false;
+      return;
+    }
+    _page++;
   }
 
-
-  @override
-  void initState() {
-    super.initState();
-    _getBannerList();
-    _getCategoryList();
-    _getRecommendationList();
-    _getInVogueList();
-    _getOneStopList();
-    _getRecommendList();
+  // 注册事件
+  void _registerEvent() {
+    _Controller.addListener(() {
+      if (_Controller.position.pixels >=
+          (_Controller.position.maxScrollExtent - 50)) {
+        // 加载更多
+        _getRecommendList();
+      }
+    });
   }
 
   // 获取分类列表
@@ -128,11 +155,16 @@ class _HomeViewState extends State<HomeView> {
     setState(() {});
   }
 
+  final ScrollController _Controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(title: const Text('首页')),
-      body: CustomScrollView(slivers: _getScollerChildreb()),
+      body: CustomScrollView(
+        slivers: _getScollerChildreb(),
+        controller: _Controller,
+      ),
     );
   }
 }
