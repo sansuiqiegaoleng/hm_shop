@@ -33,6 +33,7 @@ class CategoryItem {
     );
   }
 }
+
 //特惠推荐相关类
 class RecommendationResult {
   String id;
@@ -123,7 +124,7 @@ class GoodsItem {
   }
 }
 
-// 更多列表相关类 
+// 更多列表相关类
 class GoodDetailItem extends GoodsItem {
   int payCount = 0;
 
@@ -145,6 +146,33 @@ class GoodDetailItem extends GoodsItem {
       picture: json["picture"]?.toString() ?? "",
       orderNum: int.tryParse(json["orderNum"]?.toString() ?? "0") ?? 0,
       payCount: int.tryParse(json["payCount"]?.toString() ?? "0") ?? 0,
+    );
+  }
+}
+
+class GoodsDetailsItems {
+  int counts;
+  int pageSize;
+  int pages;
+  int page;
+  List<GoodDetailItem> items;
+  GoodsDetailsItems({
+    required this.counts,
+    required this.pageSize,
+    required this.pages,
+    required this.page,
+    required this.items,
+  });
+
+  factory GoodsDetailsItems.fromJson(Map<String, dynamic> json) {
+    return GoodsDetailsItems(
+      counts: json['counts'] ?? 0,
+      pageSize: json['pageSize'] ?? 0,
+      pages: json['pages'] ?? 0,
+      page: json['page'] ?? 0,
+      items: (json['items'] as List)
+          .map((e) => GoodDetailItem.formJSON(e))
+          .toList(),
     );
   }
 }
