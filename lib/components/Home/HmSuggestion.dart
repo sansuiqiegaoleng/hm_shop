@@ -24,21 +24,20 @@ class _HmSuggestionState extends State<HmSuggestion> {
   List<Widget> _getChildrenList() {
     List<GoodsItem> list = _getDiscountItems();
     return List.generate(list.length, (int index) {
-      return Container(
-        width: 100,
+      return Expanded(
         child: Column(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 list[index].picture,
-                width: 100,
+                //width: 100,
                 height: 140,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stckTrace) {
                   return Image.asset(
-                    '/Volumes/mac/Project/hm_shop/lib/assets/home_cmd_inner.png',
-                    width: 100,
+                    'lib/assets/home_cmd_inner.png',
+                    //width: 100,
                     height: 140,
                     fit: BoxFit.cover,
                   );
@@ -108,9 +107,7 @@ class _HmSuggestionState extends State<HmSuggestion> {
       height: 150,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(
-            '/Volumes/mac/Project/hm_shop/lib/assets/home_cmd_inner.png',
-          ),
+          image: AssetImage('lib/assets/home_cmd_inner.png'),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(10),
@@ -142,8 +139,10 @@ class _HmSuggestionState extends State<HmSuggestion> {
             Row(
               children: [
                 _buildLeft(),
+                SizedBox(width: 10),
                 Expanded(
                   child: Row(
+                    spacing: 10,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: _getChildrenList(),
                   ),
